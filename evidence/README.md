@@ -15,7 +15,7 @@
 | Проверка в браузере через Playwright | `e2e/triage.spec.mjs` — 9 сценариев; лог — [test-runs/e2e.txt](test-runs/e2e.txt) | ✅ |
 | Доказано и проверено опровергателем | [reviews/02-code-review.md](reviews/02-code-review.md) (с мутационной проверкой тестов), [reviews/03-final-review.md](reviews/03-final-review.md) — оба «ок»; логи — [test-runs/](test-runs/) | ✅ |
 | Показать «как было и как стало» глазами | [before-after.md](before-after.md) — 7 сценариев, 14 снимков; скрипт — [make-screenshots.mjs](make-screenshots.mjs) | ✅ |
-| Уложиться в 60 минут | задание получено 13:46, PR открыт 14:00; доказательства собраны к 14:25 | ✅ |
+| Уложиться в 60 минут | задание получено 13:46, PR открыт 14:00; доказательства собраны к 14:08 | ✅ |
 
 ## Отступления от порядка — честно
 
