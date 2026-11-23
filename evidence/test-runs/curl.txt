@@ -1,0 +1,19 @@
+# 23.11.2026 14:11 · curl по живому серверу (PORT=3998)
+                           → {"status":"invalid_input"}  HTTP 400, 0.005593s
+{                          → {"status":"invalid_input"}  HTTP 400, 0.001412s
+null                       → {"status":"invalid_input"}  HTTP 400, 0.000932s
+[]                         → {"status":"invalid_input"}  HTTP 400, 0.000870s
+42                         → {"status":"invalid_input"}  HTTP 400, 0.000953s
+{}                         → {"status":"invalid_input"}  HTTP 400, 0.000831s
+{"text":""}                → {"status":"invalid_input"}  HTTP 400, 0.000980s
+{"text":"   "}             → {"status":"invalid_input"}  HTTP 400, 0.000803s
+{"text":7}                 → {"status":"invalid_input"}  HTTP 400, 0.000719s
+{"text":"Когда доставка?"} → {"status":"ready","topic":"delivery","draft":"Спасибо за обращение. Уточним детали заявки."}  HTTP 200, 0.001214s
+{"text":"Какая цена?"} → {"status":"ready","topic":"pricing","draft":"Спасибо за обращение. Уточним детали заявки."}  HTTP 200, 0.000612s
+{"text":"Здравствуйте"} → {"status":"ready","topic":"other","draft":"Спасибо за обращение. Уточним детали заявки."}  HTTP 200, 0.000581s
+{"text":"x [timeout]"}     → {"status":"manual_review","topic":null,"draft":null}  HTTP 200, 0.301894s
+{"text":"x [error]"}       → {"status":"manual_review","topic":null,"draft":null}  HTTP 200, 0.001030s
+{"text":"x [bad-json]"}    → {"status":"manual_review","topic":null,"draft":null}  HTTP 200, 0.000616s
+{"text":"x [bad-topic]"}   → {"status":"manual_review","topic":null,"draft":null}  HTTP 200, 0.000681s
+{"text":"x [empty-draft]"} → {"status":"manual_review","topic":null,"draft":null}  HTTP 200, 0.000657s
+GET /nope                  → {"status":"not_found"}  HTTP 404
