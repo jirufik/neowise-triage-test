@@ -1,0 +1,21 @@
+# 23.11.2026 14:08 · PW_CHANNEL=chrome npx playwright test --reporter=list
+
+Running 9 tests using 1 worker
+
+  ✓  1 e2e/triage.spec.mjs:15:1 › успех: менеджер видит тему словами и черновик (182ms)
+[WebServer] triage manual_review: timeout
+  ✓  2 e2e/triage.spec.mjs:23:3 › сбой [timeout]: ручной разбор, прежний черновик стёрт (967ms)
+[WebServer] triage manual_review: model_error
+  ✓  3 e2e/triage.spec.mjs:23:3 › сбой [error]: ручной разбор, прежний черновик стёрт (213ms)
+[WebServer] triage manual_review: bad_json
+  ✓  4 e2e/triage.spec.mjs:23:3 › сбой [bad-json]: ручной разбор, прежний черновик стёрт (211ms)
+[WebServer] triage manual_review: bad_topic
+  ✓  5 e2e/triage.spec.mjs:23:3 › сбой [bad-topic]: ручной разбор, прежний черновик стёрт (209ms)
+[WebServer] triage manual_review: empty_draft
+  ✓  6 e2e/triage.spec.mjs:23:3 › сбой [empty-draft]: ручной разбор, прежний черновик стёрт (207ms)
+  ✓  7 e2e/triage.spec.mjs:34:1 › пустой ввод: просьба ввести текст, черновика нет (211ms)
+  ✓  8 e2e/triage.spec.mjs:42:1 › запоздавший ответ первого запроса не перетирает второй (1.2s)
+[WebServer] triage manual_review: timeout
+  ✓  9 e2e/triage.spec.mjs:59:1 › новый запрос стирает прежний черновик сразу, до ответа сервера (983ms)
+
+  9 passed (4.9s)

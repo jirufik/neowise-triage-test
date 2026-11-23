@@ -21,7 +21,7 @@ const post = (body) => fetch(`${base}/api/triage`, {
 });
 
 test("ввод: пустой, отсутствующий, нестроковый, битый JSON → 400 invalid_input", async () => {
-  for (const body of ["", "{", "null", "[]", "{}", '{"text":""}', '{"text":"   "}', '{"text":7}']) {
+  for (const body of ["", "{", "null", "[]", "42", "{}", '{"text":""}', '{"text":"   "}', '{"text":7}']) {
     const reply = await post(body);
     assert.equal(reply.status, 400, body);
     assert.deepEqual(await reply.json(), { status: "invalid_input" }, body);
@@ -56,6 +56,20 @@ test("таймаут: ответ не позже ~300 мс, хотя имита�
   const elapsed = Date.now() - started;
   assert.deepEqual(await reply.json(), { status: "manual_review", topic: null, draft: null });
   assert.ok(elapsed >= 290 && elapsed < 700, `elapsed ${elapsed} ms`);
+});
+
+test("исключение в обработчике → 500 server_error, сервер жив", async () => {
+  const broken = createServer(createHandler({ classify, log: () => { throw new Error("log down"); } }));
+  await new Promise((resolve) => broken.listen(0, "127.0.0.1", resolve));
+  try {
+    const url = `http://127.0.0.1:${broken.address().port}/api/triage`;
+    const reply = await fetch(url, { method: "POST", body: JSON.stringify({ text: "[error]" }) });
+    assert.equal(reply.status, 500);
+    assert.deepEqual(await reply.json(), { status: "server_error" });
+    assert.equal((await fetch(url, { method: "POST", body: "{}" })).status, 400);
+  } finally {
+    await new Promise((resolve) => broken.close(resolve));
+  }
 });
 
 test("прочее: неизвестный путь → 404, страница и ui.mjs отдаются", async () => {
