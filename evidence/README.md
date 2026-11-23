@@ -16,7 +16,7 @@
 | Доказано и проверено опровергателем | [reviews/02-code-review.md](reviews/02-code-review.md) (с мутационной проверкой тестов), [reviews/03-final-review.md](reviews/03-final-review.md), [reviews/04-evidence-review.md](reviews/04-evidence-review.md) — все «ок»; логи — [test-runs/](test-runs/): юнит/API, e2e, curl по живому серверу | ✅ |
 | Показать «как было и как стало» глазами | [before-after.md](before-after.md) — 7 сценариев, 14 снимков; скрипт — [make-screenshots.mjs](make-screenshots.mjs) | ✅ |
 | Журнал работы и проверка опровергателем итогового состояния | [journal.md](journal.md); отчёты всех семи проверок — [reviews/](reviews/) | ✅ |
-| Уложиться в 60 минут | задание получено 13:46, PR открыт 14:00; доказательства и журнал — до ≈14:25, точное время каждого шага — в [journal.md](journal.md) и `git log` | ✅ |
+| Уложиться в 60 минут | задание получено 13:46, PR открыт 14:00; доказательства и журнал — до ≈14:23, точное время каждого шага — в [journal.md](journal.md) и `git log` | ✅ |
 
 ## Отступления от порядка — честно
 
