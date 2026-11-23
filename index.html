@@ -9,6 +9,9 @@
     textarea { box-sizing: border-box; display: block; width: 100%; margin: .5rem 0; padding: .5rem; font: inherit; }
     button { padding: .4rem .8rem; font: inherit; }
     pre { white-space: pre-wrap; }
+    #message-box:empty, #ready[hidden] { display: none; }
+    #message-box { margin: 1rem 0; padding: .5rem .75rem; border-left: 4px solid #b45309; background: #fff7ed; }
+    #message-box[data-kind="pending"] { border-color: #6b7280; background: #f3f4f6; }
   </style>
 </head>
 <body>
@@ -18,18 +21,56 @@
     <textarea id="message" rows="4"></textarea>
     <button type="submit">Разобрать заявку</button>
   </form>
-  <pre id="result" aria-live="polite"></pre>
+  <div id="result" aria-live="polite">
+    <p id="message-box" role="status"></p>
+    <section id="ready" hidden>
+      <p>Тема: <strong id="topic"></strong></p>
+      <p>Черновик ответа (проверьте перед отправкой):</p>
+      <pre id="draft"></pre>
+    </section>
+  </div>
   <script type="module">
+    import { viewFor, pendingView, latestOnly } from "/ui.mjs";
+
     const form = document.querySelector("form");
-    const result = document.querySelector("#result");
+    const els = {
+      message: document.querySelector("#message-box"),
+      ready: document.querySelector("#ready"),
+      topic: document.querySelector("#topic"),
+      draft: document.querySelector("#draft"),
+    };
+    const requests = latestOnly();
+    let controller = null;
+
+    function render(view) {
+      els.message.textContent = view.message;
+      els.message.dataset.kind = view.kind;
+      els.topic.textContent = view.topic;
+      els.draft.textContent = view.draft;
+      els.ready.hidden = view.kind !== "ready";
+    }
+
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
-      const reply = await fetch("/api/triage", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: document.querySelector("#message").value }),
-      });
-      result.textContent = JSON.stringify(await reply.json(), null, 2);
+      const ticket = requests.next();
+      controller?.abort();
+      controller = new AbortController();
+      render(pendingView()); // прежний черновик стирается сразу
+      let view;
+      try {
+        const reply = await fetch("/api/triage", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text: document.querySelector("#message").value }),
+          signal: controller.signal,
+        });
+        const body = await reply.json().catch(() => null);
+        view = viewFor(reply.status, body);
+      } catch (error) {
+        if (error.name === "AbortError") return; // запрос заменён новым
+        view = viewFor(0, null);
+      }
+      if (requests.isCurrent(ticket)) render(view);
     });
   </script>
 </body>
