@@ -28,6 +28,8 @@ npx playwright install chromium
 npm run test:e2e              # или с установленным Chrome: PW_CHANNEL=chrome npm run test:e2e
 ```
 
+E2e поднимают свой сервер на порту 3123 (`E2E_PORT` — другой порт).
+
 ## Что где
 
 | Файл | Что |

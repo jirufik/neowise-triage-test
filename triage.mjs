@@ -56,11 +56,10 @@ export async function callModel(classify, text, ms = MODEL_TIMEOUT_MS) {
     }, ms);
   });
   const call = Promise.resolve().then(() => classify(text, { signal: controller.signal }));
-  call.catch(() => {}); // поздний отказ модели после таймаута не должен стать unhandled rejection
   try {
     return await Promise.race([call, timeout]);
   } finally {
-    clearTimeout(timer);
+    clearTimeout(timer); // страховка: не держим таймер после ответа модели
   }
 }
 

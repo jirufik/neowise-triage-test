@@ -14,6 +14,8 @@ test("manual_review, 500, сеть, мусор → сообщение о руч�
     [0, null],
     [200, { status: "ready", topic: "refund", draft: "x" }],
     [200, { status: "ready", topic: "other", draft: "  " }],
+    [200, { status: "ready", topic: "toString", draft: "x" }],
+    [200, { status: "ready", topic: "__proto__", draft: "x" }],
   ];
   for (const [code, body] of cases) {
     assert.deepEqual(viewFor(code, body), { kind: "manual", message: MESSAGES.manual, topic: "", draft: "" });

@@ -11,7 +11,7 @@ export const MESSAGES = Object.freeze({
 /** Ответ API (HTTP-статус и тело; body = null, если ответа нет или он не JSON) → состояние экрана. */
 export function viewFor(httpStatus, body) {
   if (httpStatus === 200 && body?.status === "ready"
-      && typeof body.draft === "string" && body.draft.trim() !== "" && body.topic in TOPIC_LABELS) {
+      && typeof body.draft === "string" && body.draft.trim() !== "" && Object.hasOwn(TOPIC_LABELS, body.topic)) {
     return { kind: "ready", message: "", topic: TOPIC_LABELS[body.topic], draft: body.draft };
   }
   if (httpStatus === 400 && body?.status === "invalid_input") {

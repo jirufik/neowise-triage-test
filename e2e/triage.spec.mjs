@@ -55,3 +55,12 @@ test("запоздавший ответ первого запроса не пе�
   await page.waitForTimeout(1_000);
   await expect(page.locator("#topic")).toHaveText("Доставка");
 });
+
+test("новый запрос стирает прежний черновик сразу, до ответа сервера", async ({ page }) => {
+  await submit(page, "Когда будет доставка?");
+  await expect(page.locator("#draft")).toHaveText(DRAFT);
+  await submit(page, "Когда будет доставка? [timeout]"); // сервер ответит только через 300 мс
+  await expect(page.getByRole("status")).toHaveText("Разбираем заявку…", { timeout: 250 });
+  await expect(page.locator("#draft")).toHaveText("", { timeout: 250 });
+  await expect(page.getByRole("status")).toHaveText(MANUAL);
+});
